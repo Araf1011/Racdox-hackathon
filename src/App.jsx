@@ -10,6 +10,7 @@ import Testimonials from './components/Testimonials';
 import VisitUs from './components/VisitUs';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
+import AIChatbot from './components/AIChatbot';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <FAQ />
       </main>
       <Footer />
+      <AIChatbot />
     </>
   );
 }
