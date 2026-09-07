@@ -61,7 +61,7 @@ function CategoryCard({ cat, index }) {
   return (
     <div
       className="category-card"
-      style={{ zIndex: index + 1, top: `${5 + index * 1.5}rem` }}
+      style={{ zIndex: index + 1, top: `${4.5 + index * 1.25}rem` }}
     >
       {/* Background Slides with crossfade */}
       <div className="category-card__bgs">

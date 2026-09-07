@@ -59,6 +59,8 @@ export default function Navbar() {
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 });
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileCollectionsOpen, setMobileCollectionsOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(2);
 
   const navPillRef = useRef(null);
   const linksRef = useRef(null);
@@ -68,7 +70,7 @@ export default function Navbar() {
     { label: 'Home', href: '#home', id: 'home' },
     { label: 'Collections', href: '#categories', id: 'categories', hasDropdown: true },
     { label: 'Our Story', href: '#why', id: 'why' },
-    { label: 'Testimonials', href: '#testimonials', id: 'testimonials' },
+    { label: 'Reviews', href: '#testimonials', id: 'testimonials' },
     { label: 'FAQ', href: '#faq', id: 'faq' },
   ];
 
@@ -328,6 +330,35 @@ export default function Navbar() {
 
           {/* ── Right Action CTA ── */}
           <div className="nav-right">
+            {/* Liquid Nav Cart button matching nav-cta */}
+            <button
+              type="button"
+              className="nav-cart"
+              onClick={() => setCartOpen(o => !o)}
+              aria-label={`Showroom Cart (${cartCount} items)`}
+              title="Showroom Cart"
+            >
+              <span className="nav-cart__inner">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                {cartCount > 0 && (
+                  <span className="nav-cart__badge">{cartCount}</span>
+                )}
+              </span>
+            </button>
+
             <a href="#visit" className="nav-cta" id="nav-cta-btn">
               <span className="nav-cta__inner">
                 Book a Visit
@@ -412,6 +443,24 @@ export default function Navbar() {
             </div>
           ))}
         </div>
+
+        {/* Mobile Cart Button */}
+        <button
+          type="button"
+          className="mobile-nav__cart-btn"
+          onClick={() => {
+            setMenuOpen(false);
+            setCartOpen(true);
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          <span>View Cart Selection ({cartCount})</span>
+        </button>
+
         <a href="#visit" className="nav-cta mobile-nav__cta" onClick={() => setMenuOpen(false)}>
           <span className="nav-cta__inner">
             Book a Visit
@@ -424,6 +473,125 @@ export default function Navbar() {
         <p className="mobile-nav__addr">📍 Agrabad Access Road, Chattogram</p>
       </div>
       {menuOpen && <div className="mobile-nav__backdrop" onClick={() => setMenuOpen(false)} />}
+
+      {/* ── Matching Luxury Cart Drawer ── */}
+      <div
+        className={`cart-drawer-overlay ${cartOpen ? 'cart-drawer-overlay--open' : ''}`}
+        onClick={() => setCartOpen(false)}
+      >
+        <aside
+          className={`cart-drawer ${cartOpen ? 'cart-drawer--open' : ''}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="cart-drawer__head">
+            <div className="cart-drawer__head-title">
+              <div className="cart-drawer__icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="cart-drawer__title">Showroom Cart</h3>
+                <span className="cart-drawer__sub">{cartCount} curated piece{cartCount === 1 ? '' : 's'}</span>
+              </div>
+            </div>
+            <button
+              className="cart-drawer__close"
+              onClick={() => setCartOpen(false)}
+              aria-label="Close cart"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="cart-drawer__body">
+            {cartCount === 0 ? (
+              <div className="cart-drawer__empty">
+                <div className="cart-drawer__empty-icon">🛋️</div>
+                <h4>Your Cart is Empty</h4>
+                <p>Browse our bespoke furniture collections to add handcrafted luxury pieces.</p>
+                <a
+                  href="#categories"
+                  className="cart-drawer__empty-btn"
+                  onClick={() => setCartOpen(false)}
+                >
+                  Explore Collections →
+                </a>
+              </div>
+            ) : (
+              <div className="cart-drawer__list">
+                <div className="cart-drawer__item">
+                  <div className="cart-drawer__item-info">
+                    <span className="cart-drawer__item-cat">Living Room Signature</span>
+                    <h4 className="cart-drawer__item-name">The Curva Bouclé Sectional</h4>
+                    <span className="cart-drawer__item-mat">✦ Solid Teak Frame &amp; Italian Bouclé</span>
+                    <div className="cart-drawer__item-price-row">
+                      <span className="cart-drawer__item-price">৳ 1,45,000</span>
+                      <span className="cart-drawer__item-tag">Bespoke</span>
+                    </div>
+                  </div>
+                  <button
+                    className="cart-drawer__item-remove"
+                    onClick={() => setCartCount(c => Math.max(c - 1, 0))}
+                    title="Remove item"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="cart-drawer__item">
+                  <div className="cart-drawer__item-info">
+                    <span className="cart-drawer__item-cat">Artisan Centerpiece</span>
+                    <h4 className="cart-drawer__item-name">Viola Sculptural Table</h4>
+                    <span className="cart-drawer__item-mat">✦ Honed Calacatta Viola Marble</span>
+                    <div className="cart-drawer__item-price-row">
+                      <span className="cart-drawer__item-price">৳ 42,000</span>
+                      <span className="cart-drawer__item-tag">Handcrafted</span>
+                    </div>
+                  </div>
+                  <button
+                    className="cart-drawer__item-remove"
+                    onClick={() => setCartCount(c => Math.max(c - 1, 0))}
+                    title="Remove item"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {cartCount > 0 && (
+            <div className="cart-drawer__foot">
+              <div className="cart-drawer__perks">
+                <span>✦ 100% Solid Hardwood</span>
+                <span>✦ Free 3D Staging</span>
+                <span>✦ 15-Yr Warranty</span>
+              </div>
+              <a
+                href="https://wa.me/8801700000000?text=Hello%20Heaven%20Furniture%20Mart!%20I%20would%20like%20to%20inquire%20about%20my%20selected%20furniture%20pieces."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cart-drawer__btn-whatsapp"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.97.534 1.777.818 2.801.819h.005c3.182 0 5.768-2.586 5.769-5.766.001-3.182-2.585-5.769-5.77-5.769zm3.374 8.163c-.144.405-.837.774-1.17.824-.311.048-.71.077-2.083-.49-1.758-.727-2.883-2.525-2.97-2.64-.087-.116-.71-1.045-.71-1.993 0-.948.497-1.413.673-1.606.176-.194.384-.243.512-.243.128 0 .256.002.368.007.118.005.276-.045.433.332.16.384.545 1.328.593 1.425.048.097.08.21.016.338-.064.128-.096.208-.192.32-.096.112-.202.25-.288.336-.096.096-.197.2-.085.392.112.192.497.821 1.066 1.328.732.652 1.35.854 1.542.95.192.096.304.08.416-.048.112-.128.48-.56.608-.752.128-.192.256-.16.432-.096.176.064 1.12.528 1.312.624.192.096.32.144.368.224.048.08.048.464-.096.869z" />
+                </svg>
+                <span>Inquire on WhatsApp</span>
+              </a>
+              <a
+                href="#visit"
+                className="cart-drawer__btn-visit"
+                onClick={() => setCartOpen(false)}
+              >
+                <span>Book In-Person Showroom Visit</span>
+              </a>
+            </div>
+          )}
+        </aside>
+      </div>
     </>
   );
 }

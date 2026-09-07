@@ -2,7 +2,7 @@ const quickLinks = [
   { label: 'Collections', href: '#categories' },
   { label: 'Why Choose Us', href: '#why' },
   { label: 'Our Process', href: '#how' },
-  { label: 'Testimonials', href: '#testimonials' },
+  { label: 'Reviews', href: '#testimonials' },
   { label: 'FAQ', href: '#faq' },
 ];
 
